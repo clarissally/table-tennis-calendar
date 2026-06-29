@@ -7,4 +7,32 @@ X-WR-CALNAME:王楚钦 Wang Chuqin Match Schedule
 X-WR-TIMEZONE:Asia/Shanghai
 REFRESH-INTERVAL;VALUE=DURATION:PT30M
 X-PUBLISHED-TTL:PT30M
+BEGIN:VEVENT
+UID:ttcal-81d8abd278aef1ad@table-tennis-calendar.example
+DTSTAMP:20260629T022247Z
+DTSTART:20260629T013500Z
+DTEND:20260629T023500Z
+SUMMARY:🏓 王楚钦 vs 周启豪
+DESCRIPTION:Tournament: WTT美国大满贯\nTable: T3\nScheduled local time
+  (Asia/Shanghai): 9:35\nSource post: manual-screenshot-img6890-2026-06-29\
+ nOriginal post line: 9:35 T3 王楚钦🇨🇳VS周启豪🇭🇰\nNote: e
+ nd time is not announced by the source\; this event uses a placeholder 60-
+ minute duration.
+SEQUENCE:1
+LAST-MODIFIED:20260629T022219Z
+END:VEVENT
+BEGIN:VEVENT
+UID:ttcal-9117653b284e4fd5@table-tennis-calendar.example
+DTSTAMP:20260629T022247Z
+DTSTART:20260629T212000Z
+DTEND:20260629T222000Z
+SUMMARY:🏓 王楚钦/孙颖莎 vs TBD
+DESCRIPTION:Tournament: WTT美国大满贯\nTable: T1\nScheduled local time
+  (Asia/Shanghai): 5:20\nSource post: manual-screenshot-img6891-2026-06-30\
+ nOriginal post line: 5:20 T1 王楚钦/孙颖莎🇨🇳vsTBD\nNote: end t
+ ime is not announced by the source\; this event uses a placeholder 60-minu
+ te duration.
+SEQUENCE:1
+LAST-MODIFIED:20260629T022219Z
+END:VEVENT
 END:VCALENDAR

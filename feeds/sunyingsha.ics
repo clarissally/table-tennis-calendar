@@ -7,4 +7,32 @@ X-WR-CALNAME:孙颖莎 Sun Yingsha Match Schedule
 X-WR-TIMEZONE:Asia/Shanghai
 REFRESH-INTERVAL;VALUE=DURATION:PT30M
 X-PUBLISHED-TTL:PT30M
+BEGIN:VEVENT
+UID:ttcal-9117653b284e4fd5@table-tennis-calendar.example
+DTSTAMP:20260629T022247Z
+DTSTART:20260629T212000Z
+DTEND:20260629T222000Z
+SUMMARY:🏓 王楚钦/孙颖莎 vs TBD
+DESCRIPTION:Tournament: WTT美国大满贯\nTable: T1\nScheduled local time
+  (Asia/Shanghai): 5:20\nSource post: manual-screenshot-img6891-2026-06-30\
+ nOriginal post line: 5:20 T1 王楚钦/孙颖莎🇨🇳vsTBD\nNote: end t
+ ime is not announced by the source\; this event uses a placeholder 60-minu
+ te duration.
+SEQUENCE:1
+LAST-MODIFIED:20260629T022219Z
+END:VEVENT
+BEGIN:VEVENT
+UID:ttcal-c0dcdfd2b0c6ab23@table-tennis-calendar.example
+DTSTAMP:20260629T022247Z
+DTSTART:20260630T010000Z
+DTEND:20260630T020000Z
+SUMMARY:🏓 孙颖莎 vs 刘杨子
+DESCRIPTION:Tournament: WTT美国大满贯\nTable: T1\nScheduled local time
+  (Asia/Shanghai): 9:00\nSource post: manual-screenshot-img6891-2026-06-30\
+ nOriginal post line: 9:00 T1 孙颖莎🇨🇳VS刘杨子🇦🇺\nNote: e
+ nd time is not announced by the source\; this event uses a placeholder 60-
+ minute duration.
+SEQUENCE:1
+LAST-MODIFIED:20260629T022219Z
+END:VEVENT
 END:VCALENDAR
