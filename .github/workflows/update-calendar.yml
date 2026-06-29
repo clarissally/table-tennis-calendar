@@ -24,9 +24,15 @@ jobs:
           # files alone while still updating tracked ones normally.
           clean: false
 
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.11"
+      # actions/setup-python (toolcache download) intermittently fails on
+      # this self-hosted runner ("Error happened during Python
+      # installation") -- it's been flaky, succeeding on some runs and
+      # failing on others, likely a transient network/download issue on
+      # this machine. Since the runner machine already has a real,
+      # confirmed-working system Python (python.org install, verified via
+      # `python --version` during runner setup), there's nothing to gain
+      # from re-downloading an isolated one each run. Removed in favor of
+      # whatever `python` is already on PATH for the runner service.
 
       - name: Run pipeline
         run: python run_pipeline.py
