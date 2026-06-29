@@ -61,12 +61,32 @@ class WeiboFetchError(RuntimeError):
 
 
 def _get_json(url: str) -> dict:
-    req = urllib.request.Request(url, headers={"User-Agent": USER_AGENT, "Accept": "application/json"})
+    # Referer + MWeibo-Pwa are required in practice: m.weibo.cn's API
+    # rejects requests with no Referer (often with an empty 200 body,
+    # which surfaces here as a JSONDecodeError) -- this was discovered
+    # when the first real deployment run (from a GitHub Actions runner,
+    # a datacenter IP unlike the browser session used during development)
+    # got exactly that empty-body failure.
+    req = urllib.request.Request(
+        url,
+        headers={
+            "User-Agent": USER_AGENT,
+            "Accept": "application/json, text/plain, */*",
+            "Referer": f"https://m.weibo.cn/u/{UID}",
+            "MWeibo-Pwa": "1",
+            "X-Requested-With": "XMLHttpRequest",
+        },
+    )
     try:
         with urllib.request.urlopen(req, timeout=REQUEST_TIMEOUT_SECONDS) as resp:
             body = resp.read()
     except urllib.error.URLError as e:
         raise WeiboFetchError(f"network error fetching {url}: {e}") from e
+    if not body or not body.strip():
+        raise WeiboFetchError(
+            f"empty response body from {url} -- likely blocked/rate-limited "
+            f"by the server rather than a genuine malformed response"
+        )
     try:
         return json.loads(body)
     except json.JSONDecodeError as e:
