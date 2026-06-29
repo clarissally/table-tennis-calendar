@@ -201,13 +201,45 @@ def _get_visitor_cookie() -> str:
     return _VISITOR_COOKIE
 
 
+# How many times to retry a single request after a transient network error
+# (timeout, connection reset, etc.) before giving up. Observed in practice on
+# the self-hosted Windows runner: occasional SSL handshake timeouts and
+# read-timeouts talking to m.weibo.cn, especially once a run has already made
+# several requests (paginating + fetch_full_text calls). These are one-off
+# blips, not a sign the API/account is unreachable -- a short retry clears
+# them almost every time.
+NETWORK_RETRY_ATTEMPTS = 3
+NETWORK_RETRY_BACKOFF_SECONDS = 3.0
+
+
 def _fetch_json_once(url: str, cookie: Optional[str]) -> dict:
-    req = urllib.request.Request(url, headers=_request_headers(cookie))
-    try:
-        with urllib.request.urlopen(req, timeout=REQUEST_TIMEOUT_SECONDS) as resp:
-            body = resp.read()
-    except urllib.error.URLError as e:
-        raise WeiboFetchError(f"network error fetching {url}: {e}") from e
+    last_error: Optional[Exception] = None
+    for attempt in range(1, NETWORK_RETRY_ATTEMPTS + 1):
+        req = urllib.request.Request(url, headers=_request_headers(cookie))
+        try:
+            with urllib.request.urlopen(req, timeout=REQUEST_TIMEOUT_SECONDS) as resp:
+                body = resp.read()
+            break
+        except (urllib.error.URLError, OSError, TimeoutError) as e:
+            # Note: a timeout/connection error raised while reading the
+            # response (inside http.client's getresponse(), which is where
+            # the SSL handshake and the actual read happen) is NOT wrapped as
+            # urllib.error.URLError by urlopen() -- only errors during the
+            # earlier request-send phase get that treatment. It instead
+            # surfaces as a bare OSError/TimeoutError. Catch both so transient
+            # network blips at any phase get retried instead of crashing the
+            # whole run.
+            last_error = e
+            if attempt < NETWORK_RETRY_ATTEMPTS:
+                time.sleep(NETWORK_RETRY_BACKOFF_SECONDS * attempt)
+                continue
+            raise WeiboFetchError(
+                f"network error fetching {url} (after {NETWORK_RETRY_ATTEMPTS} attempts): {e}"
+            ) from e
+    else:
+        # Unreachable in practice (the loop either breaks or raises above),
+        # but keeps type-checkers/readers honest about the loop's contract.
+        raise WeiboFetchError(f"network error fetching {url}: {last_error}")
 
     if not body or not body.strip():
         raise WeiboFetchError(
