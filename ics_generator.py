@@ -25,12 +25,15 @@ out in each event's DESCRIPTION so this assumption is visible to anyone
 inspecting the feed, not just buried in code. See design doc Section 3 /
 README "Known limitations".
 
-DESCRIPTION field language: subscriber-facing text (field labels, the
-"where did this come from" line) is Chinese, since the audience is
-Chinese-speaking fans subscribing to a Chinese source account. See
-_source_description() below for why the raw source_post_id (a screenshot
-filename or a Weibo post mid) is never shown verbatim -- those are
-internal implementation details, not user-facing information.
+DESCRIPTION field language: subscriber-facing text (field labels) is
+Chinese, since the audience is Chinese-speaking fans subscribing to a
+Chinese source account. Note: this field deliberately does NOT include a
+per-event "where did this come from" line -- that information already
+lives at the subscription level (one feed = one source), so repeating it
+on every single event would just be noise. If a per-event source line is
+ever needed again, source_post_id is still recorded on StoredEvent and
+the prefix-based "manual-screenshot" vs. live-scrape distinction can be
+reconstructed from there.
 
 Calendar display name (X-WR-CALNAME): also pure Chinese (e.g.
 "王楚钦赛程日历"), not mixed English/Chinese -- this is the name most
@@ -42,7 +45,7 @@ from __future__ import annotations
 
 import datetime as dt
 import os
-from typing import Iterable, List, Optional
+from typing import Iterable, List
 
 from state_store import StoredEvent
 
@@ -102,24 +105,6 @@ def _format_utc(moment: dt.datetime) -> str:
     return moment.strftime("%Y%m%dT%H%M%SZ")
 
 
-def _source_description(source_post_id: Optional[str]) -> str:
-    """Human-facing (Chinese), non-technical description of where an
-    event's data came from. Deliberately does NOT leak internal
-    identifiers (screenshot filenames like 'manual-screenshot-img6890-...'
-    or raw Weibo post mids) into the subscriber-facing feed -- those are
-    implementation details, not something a calendar subscriber needs to
-    see. Covers both the automated scraper path (source_post_id is a
-    Weibo mid, set in run_pipeline.py) and the Plan B manual screenshot
-    path (source_post_id is prefixed "manual-screenshot", set in
-    tools/ingest_manual_post.py) -- so this applies uniformly to every
-    event regardless of which path produced it."""
-    if not source_post_id:
-        return "来源未知"
-    if source_post_id.startswith("manual-screenshot"):
-        return "博主微博截图（人工录入）"
-    return "博主微博发布"
-
-
 def _build_vevent(stored: StoredEvent, generated_at: dt.datetime) -> List[str]:
     start_utc = _dtstamp_utc(stored.date, stored.time_local)
     end_utc = start_utc + DEFAULT_DURATION
@@ -131,7 +116,6 @@ def _build_vevent(stored: StoredEvent, generated_at: dt.datetime) -> List[str]:
         f"赛事：{stored.tournament_name or '未知'}",
         f"球台：{stored.table or '未知'}",
         f"北京时间：{stored.time_local}",
-        f"消息来源：{_source_description(stored.source_post_id)}",
         f"原文摘录：{stored.raw_line}",
         "备注：原始消息未公布结束时间，此事件统一按"
         f"{int(DEFAULT_DURATION.total_seconds() // 60)}分钟占位时长处理。",
