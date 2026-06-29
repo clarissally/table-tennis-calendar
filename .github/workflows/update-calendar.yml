@@ -13,9 +13,20 @@ jobs:
     runs-on: self-hosted
     defaults:
       run:
-        shell: powershell
+        shell: bash
     steps:
       - uses: actions/checkout@v4
+        with:
+          # Default clean:true runs `git clean -ffdx` before checkout, which
+          # would delete weibo_cookie.txt (a manually-placed, gitignored,
+          # untracked file -- see README "Weibo login wall") every run,
+          # before run_pipeline.py even starts. clean:false leaves untracked
+          # files alone while still updating tracked ones normally.
+          clean: false
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
 
       - name: Run pipeline
         run: python run_pipeline.py
@@ -25,10 +36,5 @@ jobs:
           git config user.name "calendar-bot"
           git config user.email "calendar-bot@users.noreply.github.com"
           git add feeds data
-          git diff --cached --quiet
-          if ($LASTEXITCODE -eq 0) {
-            Write-Host "No changes to commit"
-          } else {
-            git commit -m "Update schedule feeds"
-            git push
-          }
+          git diff --cached --quiet || git commit -m "Update schedule feeds"
+          git push
