@@ -1,39 +1,39 @@
 {
-  "ttcal-9117653b284e4fd5@table-tennis-calendar.example": {
+  "ttcal-42cfbae0a6c78f7d@clarissally.github.io": {
     "confidence": "high",
     "date": "2026-06-30",
-    "last_modified": "2026-06-29T06:33:27Z",
-    "player1": "王楚钦/孙颖莎",
-    "player2": "TBD",
-    "player_tags": [
-      "sunyingsha",
-      "wangchuqin"
-    ],
-    "raw_line": "5:20 T1 王楚钦/孙颖莎🇨🇳vsTBD",
-    "sequence": 3,
-    "source_post_id": "manual-screenshot-img6891-2026-06-30",
-    "table": "T1",
-    "time_local": "5:20",
-    "timezone_assumed": "Asia/Shanghai",
-    "tournament_name": "WTT美国大满贯",
-    "uid": "ttcal-9117653b284e4fd5@table-tennis-calendar.example"
-  },
-  "ttcal-c0dcdfd2b0c6ab23@table-tennis-calendar.example": {
-    "confidence": "high",
-    "date": "2026-06-30",
-    "last_modified": "2026-06-29T06:33:27Z",
+    "last_modified": "2026-06-29T10:29:16Z",
     "player1": "孙颖莎",
     "player2": "刘杨子",
     "player_tags": [
       "sunyingsha"
     ],
     "raw_line": "9:00 T1 孙颖莎🇨🇳VS刘杨子🇦🇺",
-    "sequence": 3,
-    "source_post_id": "manual-screenshot-img6891-2026-06-30",
+    "sequence": 4,
+    "source_post_id": "manual-screenshot-2026-06-30-edited",
     "table": "T1",
     "time_local": "9:00",
     "timezone_assumed": "Asia/Shanghai",
     "tournament_name": "WTT美国大满贯",
-    "uid": "ttcal-c0dcdfd2b0c6ab23@table-tennis-calendar.example"
+    "uid": "ttcal-42cfbae0a6c78f7d@clarissally.github.io"
+  },
+  "ttcal-9a8c36813c2f2e97@clarissally.github.io": {
+    "confidence": "high",
+    "date": "2026-06-30",
+    "last_modified": "2026-06-29T10:29:16Z",
+    "player1": "王楚钦/孙颖莎",
+    "player2": "皮斯特维德/库库洛娃",
+    "player_tags": [
+      "sunyingsha",
+      "wangchuqin"
+    ],
+    "raw_line": "5:20 T1 王楚钦/孙颖莎🇨🇳vs皮斯特维德/库库洛娃🇸🇰",
+    "sequence": 5,
+    "source_post_id": "manual-screenshot-2026-06-30-edited",
+    "table": "T1",
+    "time_local": "5:20",
+    "timezone_assumed": "Asia/Shanghai",
+    "tournament_name": "WTT美国大满贯",
+    "uid": "ttcal-9a8c36813c2f2e97@clarissally.github.io"
   }
 }
