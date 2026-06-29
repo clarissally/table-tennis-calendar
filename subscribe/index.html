@@ -119,6 +119,17 @@
     padding: 0.2rem 0.5rem;
   }
   .lang-toggle button.active { color: var(--accent); font-weight: 600; text-decoration: none; cursor: default; }
+  .browser-tip {
+    max-width: 640px;
+    margin: 1rem auto 0;
+    padding: 0.7rem 0.9rem;
+    background: #fff7e6;
+    border: 1px solid #f0d9a6;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    color: #7a5b00;
+    text-align: left;
+  }
 </style>
 </head>
 <body>
@@ -133,6 +144,10 @@
     <button class="active" data-lang-btn="zh">中文</button> ·
     <button data-lang-btn="en">English</button>
   </div>
+  <p class="browser-tip" data-zh="提示：如果你是在微信、QQ 等 App 内置浏览器里打开本页，订阅按钮可能无法正常跳转或会生成错误的链接（例如把 https:// 变成 http://）。建议点右上角「...」选择「在浏览器中打开」，用系统自带的 Safari / Chrome 打开本页后再订阅；或直接点「复制」按钮，把链接手动粘贴到日历 App 里，并确认粘贴后的链接以 https:// 开头。"
+     data-en="Tip: if you're viewing this page inside an in-app browser (e.g. WeChat, QQ), the subscribe buttons may not work correctly or may produce a broken link (e.g. https:// turning into http://). Open this page in Safari/Chrome instead, or use the “Copy” button and paste the link into your calendar app manually — just double-check the pasted link starts with https://.">
+    提示：如果你是在微信、QQ 等 App 内置浏览器里打开本页，订阅按钮可能无法正常跳转或会生成错误的链接（例如把 https:// 变成 http://）。建议点右上角「...」选择「在浏览器中打开」，用系统自带的 Safari / Chrome 打开本页后再订阅；或直接点「复制」按钮，把链接手动粘贴到日历 App 里，并确认粘贴后的链接以 https:// 开头。
+  </p>
 </header>
 
 <main>
