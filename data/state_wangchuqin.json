@@ -2,14 +2,14 @@
   "ttcal-81d8abd278aef1ad@table-tennis-calendar.example": {
     "confidence": "high",
     "date": "2026-06-29",
-    "last_modified": "2026-06-29T06:13:11Z",
+    "last_modified": "2026-06-29T06:33:27Z",
     "player1": "王楚钦",
     "player2": "周启豪",
     "player_tags": [
       "wangchuqin"
     ],
     "raw_line": "9:35 T3 王楚钦🇨🇳VS周启豪🇭🇰",
-    "sequence": 2,
+    "sequence": 3,
     "source_post_id": "manual-screenshot-img6890-2026-06-29",
     "table": "T3",
     "time_local": "9:35",
@@ -20,7 +20,7 @@
   "ttcal-9117653b284e4fd5@table-tennis-calendar.example": {
     "confidence": "high",
     "date": "2026-06-30",
-    "last_modified": "2026-06-29T06:13:11Z",
+    "last_modified": "2026-06-29T06:33:27Z",
     "player1": "王楚钦/孙颖莎",
     "player2": "TBD",
     "player_tags": [
@@ -28,7 +28,7 @@
       "wangchuqin"
     ],
     "raw_line": "5:20 T1 王楚钦/孙颖莎🇨🇳vsTBD",
-    "sequence": 2,
+    "sequence": 3,
     "source_post_id": "manual-screenshot-img6891-2026-06-30",
     "table": "T1",
     "time_local": "5:20",
