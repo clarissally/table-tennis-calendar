@@ -1,5 +1,5 @@
 {
-  "ttcal-81d8abd278aef1ad@table-tennis-calendar.example": {
+  "ttcal-0a361d9922dc9796@clarissally.github.io": {
     "confidence": "high",
     "date": "2026-06-29",
     "last_modified": "2026-06-29T06:33:27Z",
@@ -15,25 +15,25 @@
     "time_local": "9:35",
     "timezone_assumed": "Asia/Shanghai",
     "tournament_name": "WTT美国大满贯",
-    "uid": "ttcal-81d8abd278aef1ad@table-tennis-calendar.example"
+    "uid": "ttcal-0a361d9922dc9796@clarissally.github.io"
   },
-  "ttcal-9117653b284e4fd5@table-tennis-calendar.example": {
+  "ttcal-9a8c36813c2f2e97@clarissally.github.io": {
     "confidence": "high",
     "date": "2026-06-30",
-    "last_modified": "2026-06-29T06:33:27Z",
+    "last_modified": "2026-06-29T10:29:16Z",
     "player1": "王楚钦/孙颖莎",
-    "player2": "TBD",
+    "player2": "皮斯特维德/库库洛娃",
     "player_tags": [
       "sunyingsha",
       "wangchuqin"
     ],
-    "raw_line": "5:20 T1 王楚钦/孙颖莎🇨🇳vsTBD",
-    "sequence": 3,
-    "source_post_id": "manual-screenshot-img6891-2026-06-30",
+    "raw_line": "5:20 T1 王楚钦/孙颖莎🇨🇳vs皮斯特维德/库库洛娃🇸🇰",
+    "sequence": 5,
+    "source_post_id": "manual-screenshot-2026-06-30-edited",
     "table": "T1",
     "time_local": "5:20",
     "timezone_assumed": "Asia/Shanghai",
     "tournament_name": "WTT美国大满贯",
-    "uid": "ttcal-9117653b284e4fd5@table-tennis-calendar.example"
+    "uid": "ttcal-9a8c36813c2f2e97@clarissally.github.io"
   }
 }
