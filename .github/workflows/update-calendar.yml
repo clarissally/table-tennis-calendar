@@ -7,6 +7,7 @@ on:
 
 permissions:
   contents: write
+  issues: write
 
 jobs:
   run:
@@ -56,7 +57,7 @@ jobs:
         # step below only runs on exit 0 (outcome == 'success'), so no
         # changes are committed when the threshold is hit.
         env:
-          GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: python run_pipeline.py --max-pages 6
         continue-on-error: true
 
