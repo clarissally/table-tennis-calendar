@@ -38,6 +38,7 @@ jobs:
       # whatever `python` is already on PATH for the runner service.
 
       - name: Run pipeline
+        id: pipeline
         # max-pages 6: confirmed live (production run #22) that 3 pages
         # (~32 posts) was NOT enough -- during this tournament window the
         # account posts match-result recaps very fast (each completed match
@@ -48,9 +49,19 @@ jobs:
         # the self-hosted runner -- cheap enough to use as the standing
         # default rather than re-tuning this every time posting volume
         # spikes.
+        #
+        # Exit code 99: daily update threshold reached (>= 5 new/changed
+        # events in one UTC day). run_pipeline.py sends an alert email and
+        # exits 99; continue-on-error keeps the job green, and the commit
+        # step below only runs on exit 0 (outcome == 'success'), so no
+        # changes are committed when the threshold is hit.
+        env:
+          GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
         run: python run_pipeline.py --max-pages 6
+        continue-on-error: true
 
       - name: Commit and push if changed
+        if: steps.pipeline.outcome == 'success'
         run: |
           git config user.name "calendar-bot"
           git config user.email "calendar-bot@users.noreply.github.com"
