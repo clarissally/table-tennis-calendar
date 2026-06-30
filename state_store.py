@@ -258,24 +258,19 @@ def apply_events(player_tag: str, events: List[ScheduleEvent]) -> UpdateResult:
 
         state[uid] = stored
 
-        if stored.confidence == "high":
-            result.publishable.append(stored)
-            review_by_uid.pop(uid, None)  # if it was previously held, it's resolved now
-        else:
-            result.held_for_review.append(uid)
-            review_by_uid[uid] = ReviewItem(
-                uid=uid,
-                reason=f"overall_confidence={confidence}; needs human check before publishing",
-                queued_at=review_by_uid.get(uid, ReviewItem(uid, "", now, {})).queued_at if uid in review_by_uid else now,
-                event=asdict(stored),
-            )
+        # Confidence gate removed: all events auto-publish regardless of
+        # confidence score. The daily-update threshold in run_pipeline.py
+        # (default: 5 updates/day) acts as the safety net for anomalous
+        # bursts instead of per-event human review.
+        result.publishable.append(stored)
+        review_by_uid.pop(uid, None)  # clear any previously held entry for this uid
 
-    # Include any previously-published high-confidence events that simply
-    # weren't mentioned in this batch -- they stay on the calendar (see
-    # module docstring "Known limitation" re: no auto-removal).
+    # Include any previously-seen events that weren't mentioned in this
+    # batch -- they stay on the calendar (see module docstring "Known
+    # limitation" re: no auto-removal).
     seen_uids = {compute_uid(e) for e in events if player_tag in e.player_tags}
     for uid, stored in state.items():
-        if uid not in seen_uids and stored.confidence == "high":
+        if uid not in seen_uids:
             result.publishable.append(stored)
 
     save_state(player_tag, state)
