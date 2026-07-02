@@ -35,6 +35,25 @@
     "tournament_name": "WTT美国大满贯",
     "uid": "ttcal-42cfbae0a6c78f7d@clarissally.github.io"
   },
+  "ttcal-7ee843af9679a67d@table-tennis-calendar.example": {
+    "confidence": "medium",
+    "date": "2026-07-03",
+    "last_modified": "2026-07-02T15:11:45Z",
+    "player1": "王楚钦/孙颖莎",
+    "player2": "卡尔德拉诺/高桥·布鲁娜",
+    "player_tags": [
+      "sunyingsha",
+      "wangchuqin"
+    ],
+    "raw_line": "5:55 T1 王楚钦/孙颖莎🇨🇳VS卡尔德拉诺/高桥·布鲁娜🇧🇷",
+    "sequence": 0,
+    "source_post_id": "5316130344273428",
+    "table": "T1",
+    "time_local": "5:55",
+    "timezone_assumed": "Asia/Shanghai",
+    "tournament_name": "WTT美国大满贯",
+    "uid": "ttcal-7ee843af9679a67d@table-tennis-calendar.example"
+  },
   "ttcal-7fef0e5c658112d4@clarissally.github.io": {
     "confidence": "high",
     "date": "2026-07-02",
