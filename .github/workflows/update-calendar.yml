@@ -56,34 +56,8 @@ jobs:
             [System.IO.File]::WriteAllText("weibo_cookie.txt", $env:WEIBO_COOKIE, [System.Text.UTF8Encoding]::new($false))
           }
 
-      # actions/setup-python (toolcache download) intermittently fails on
-      # this self-hosted runner ("Error happened during Python
-      # installation") -- it's been flaky, succeeding on some runs and
-      # failing on others, likely a transient network/download issue on
-      # this machine. Since the runner machine already has a real,
-      # confirmed-working system Python (python.org install, verified via
-      # `python --version` during runner setup), there's nothing to gain
-      # from re-downloading an isolated one each run. Removed in favor of
-      # whatever `python` is already on PATH for the runner service.
-
       - name: Run pipeline
         id: pipeline
-        # max-pages 6: confirmed live (production run #22) that 3 pages
-        # (~32 posts) was NOT enough -- during this tournament window the
-        # account posts match-result recaps very fast (each completed match
-        # gets its own recap post), so a schedule post from earlier in the
-        # day (e.g. "7月1日中国队赛程") can already be 40-60 posts deep by
-        # the time a 30-min job runs. 6 pages (~60+ posts) was confirmed via
-        # tools/dump_posts.py to reach that post and complete in ~1.5min on
-        # the self-hosted runner -- cheap enough to use as the standing
-        # default rather than re-tuning this every time posting volume
-        # spikes.
-        #
-        # Exit code 99: daily update threshold reached (>= 5 new/changed
-        # events in one UTC day). run_pipeline.py sends an alert email and
-        # exits 99; continue-on-error keeps the job green, and the commit
-        # step below only runs on exit 0 (outcome == 'success'), so no
-        # changes are committed when the threshold is hit.
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: python run_pipeline.py --max-pages ${{ github.event.inputs.max_pages || 6 }}
@@ -100,3 +74,14 @@ jobs:
             git commit -m "Update schedule feeds"
           }
           git push
+
+      - name: Upload ICS to Tencent COS
+        if: steps.pipeline.outcome == 'success'
+        env:
+          TENCENT_SECRET_ID: ${{ secrets.TENCENT_SECRET_ID }}
+          TENCENT_SECRET_KEY: ${{ secrets.TENCENT_SECRET_KEY }}
+          TENCENT_BUCKET: ${{ secrets.TENCENT_BUCKET }}
+          TENCENT_REGION: ${{ secrets.TENCENT_REGION }}
+        run: |
+          pip install cos-python-sdk-v5 --quiet --break-system-packages
+          python upload_to_cos.py
