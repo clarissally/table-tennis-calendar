@@ -8,7 +8,7 @@ on:
       max_pages:
         description: 'Number of pages to fetch from Weibo'
         required: false
-        default: '15'
+        default: '6'
 
 permissions:
   contents: write
@@ -86,7 +86,7 @@ jobs:
         # changes are committed when the threshold is hit.
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: python run_pipeline.py --max-pages ${{ github.event.inputs.max_pages || 15 }}
+        run: python run_pipeline.py --max-pages ${{ github.event.inputs.max_pages || 6 }}
         continue-on-error: true
 
       - name: Commit and push if changed
