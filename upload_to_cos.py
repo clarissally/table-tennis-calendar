@@ -1,7 +1,7 @@
 """
 upload_to_cos.py
 
-Uploads all ICS files from the feeds/ directory to Tencent Cloud COS.
+Uploads ICS feeds and subscribe page to Tencent Cloud COS.
 Run after ics_generator has written the feeds.
 
 Required environment variables:
@@ -29,24 +29,38 @@ def main():
     config = CosConfig(Region=region, SecretId=secret_id, SecretKey=secret_key)
     client = CosS3Client(config)
 
-    ics_files = glob.glob("feeds/*.ics")
-    if not ics_files:
-        print("No ICS files found in feeds/")
+    CONTENT_TYPES = {
+        ".ics": "text/calendar; charset=utf-8",
+        ".html": "text/html; charset=utf-8",
+        ".jpg": "image/jpeg",
+        ".jpeg": "image/jpeg",
+        ".png": "image/png",
+    }
+
+    patterns = ["feeds/*.ics", "subscribe/index.html", "subscribe/*.jpg", "subscribe/*.png"]
+    files = []
+    for p in patterns:
+        files.extend(glob.glob(p))
+
+    if not files:
+        print("No files found to upload.")
         sys.exit(0)
 
-    for local_path in ics_files:
+    for local_path in files:
         key = local_path.replace("\\", "/")
+        ext = os.path.splitext(local_path)[1].lower()
+        content_type = CONTENT_TYPES.get(ext, "application/octet-stream")
         print(f"Uploading {local_path} -> cos://{bucket}/{key}")
         with open(local_path, "rb") as f:
             client.put_object(
                 Bucket=bucket,
                 Body=f,
                 Key=key,
-                ContentType="text/calendar; charset=utf-8",
+                ContentType=content_type,
             )
         print(f"  OK: https://{bucket}.cos.{region}.myqcloud.com/{key}")
 
-    print(f"Done. Uploaded {len(ics_files)} file(s).")
+    print(f"Done. Uploaded {len(files)} file(s).")
 
 if __name__ == "__main__":
     main()
