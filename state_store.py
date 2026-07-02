@@ -168,7 +168,11 @@ def load_state(player_tag: str) -> Dict[str, StoredEvent]:
         return {}
     with open(path, "r", encoding="utf-8") as f:
         raw = json.load(f)
-    return {uid: StoredEvent(**fields) for uid, fields in raw.items()}
+    valid_fields = set(StoredEvent.__dataclass_fields__)
+    return {
+        uid: StoredEvent(**{k: v for k, v in fields.items() if k in valid_fields})
+        for uid, fields in raw.items()
+    }
 
 
 def save_state(player_tag: str, state: Dict[str, StoredEvent]) -> None:
