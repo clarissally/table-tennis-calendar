@@ -19,6 +19,16 @@ jobs:
     # present from the earlier execution-policy fix), and are written in
     # PowerShell-compatible syntax (no bash-only `||`/`&&` chaining).
     steps:
+      - name: Remove stale git lock files
+        # A previous run may have exited mid-git-operation and left a lock
+        # file behind. actions/checkout@v4 treats an unclean lock as a fatal
+        # error and falls back to re-cloning the repo from scratch -- which
+        # deletes gitignored untracked files (e.g. weibo_cookie.txt). Removing
+        # any stale locks before checkout prevents that fallback entirely.
+        run: |
+          if (Test-Path .git/HEAD.lock) { Remove-Item .git/HEAD.lock -Force }
+          if (Test-Path .git/index.lock) { Remove-Item .git/index.lock -Force }
+
       - uses: actions/checkout@v4
         with:
           # Default clean:true runs `git clean -ffdx` before checkout, which
@@ -27,6 +37,19 @@ jobs:
           # before run_pipeline.py even starts. clean:false leaves untracked
           # files alone while still updating tracked ones normally.
           clean: false
+
+      - name: Restore Weibo cookie
+        # weibo_cookie.txt is gitignored (never committed) -- it holds a
+        # real logged-in Weibo session cookie. Store it as a repo secret
+        # WEIBO_COOKIE so it survives even if the runner workspace is wiped.
+        # If the secret is absent the step is a no-op (the file stays
+        # wherever it was, or the pipeline will error with a clear message).
+        env:
+          WEIBO_COOKIE: ${{ secrets.WEIBO_COOKIE }}
+        run: |
+          if ($env:WEIBO_COOKIE) {
+            [System.IO.File]::WriteAllText("weibo_cookie.txt", $env:WEIBO_COOKIE, [System.Text.UTF8Encoding]::new($false))
+          }
 
       # actions/setup-python (toolcache download) intermittently fails on
       # this self-hosted runner ("Error happened during Python
